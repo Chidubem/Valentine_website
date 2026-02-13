@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Memories ❤️</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+<style>
+    body.gallery-page {
+        margin: 0;
+        min-height: 100vh;
+        height: auto !important;
+        padding: 120px 20px 60px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4, #ffdde1);
+        background-size: 400% 400%;
+        animation: gradientMove 15s ease infinite;
+        overflow-x: hidden;
+        overflow-y: auto !important;
+    }
+
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* HEARTS BACKGROUND */
+    .hearts {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 0;
+    }
+
+    .heart {
+        position: absolute;
+        bottom: -10px;
+        font-size: 20px;
+        animation: floatUp linear infinite;
+        opacity: 0.6;
+        text-shadow: 0 0 10px rgba(255,0,0,0.5);
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0; }
+        20% { opacity: 0.6; }
+        100% { transform: translateY(-110vh) scale(1.5) rotate(-15deg); opacity: 0; }
+    }
+
+    /* GALLERY CONTAINER */
+    .gallery-container {
+        max-width: 900px;
+        width: 90%;
+        padding: 40px 30px;
+        border-radius: 40px;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(30px) saturate(160%);
+        -webkit-backdrop-filter: blur(30px) saturate(160%);
+        border: 1.5px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1), 0 0 50px rgba(255, 77, 109, 0.4);
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        margin: 20px auto;
+    }
+
+    h1 {
+        color: #d81b60;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        letter-spacing: 2px;
+        text-shadow: 0 0 15px #ff4d6d;
+    }
+
+    .subtitle {
+        color: #666;
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+        font-style: italic;
+    }
+
+    /* SLIDESHOW */
+    .slideshow-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 700px;
+        margin: 0 auto 30px;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .slideshow {
+        position: relative;
+        width: 100%;
+        height: 450px;
+        background: linear-gradient(135deg, rgba(255,182,193,0.3), rgba(255,218,224,0.3));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .slide {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .slide.active {
+        opacity: 1;
+        z-index: 2;
+    }
+
+    .photo-placeholder {
+        width: 100%;
+        height: 350px;
+        background: linear-gradient(135deg, #ffc1cc, #ffb3c6);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 80px;
+        margin-bottom: 15px;
+        box-shadow: 0 5px 20px rgba(255, 77, 109, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Photo upload area styling */
+    .photo-placeholder::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: shimmer 3s infinite;
+        z-index: 0;
+    }
+
+    @keyframes shimmer {
+        0% { left: -100%; }
+        100% { left: 100%; }
+    }
+
+    .photo-placeholder img,
+    .photo-placeholder video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 15px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .caption {
+        font-family: 'Dancing Script', cursive;
+        font-size: 1.3rem;
+        color: #d81b60;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    /* NAVIGATION BUTTONS */
+    .nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.8);
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-btn:hover {
+        background: rgba(255, 255, 255, 1);
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 8px 20px rgba(255, 77, 109, 0.4);
+    }
+
+    .prev-btn { left: 10px; }
+    .next-btn { right: 10px; }
+
+    /* DOTS INDICATOR */
+    .dots {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(216, 27, 96, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .dot.active {
+        background: #d81b60;
+        transform: scale(1.3);
+        box-shadow: 0 0 10px rgba(216, 27, 96, 0.6);
+    }
+
+    .dot:hover {
+        background: #ff4d6d;
+        transform: scale(1.2);
+    }
+
+    /* COUNTER */
+    .counter {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    /* BUTTONS */
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        background: linear-gradient(45deg, #ff4d6d, #ff758f);
+        border: none;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 77, 109, 0.6);
+    }
+
+    .btn.secondary {
+        background: linear-gradient(45deg, #9e9e9e, #bdbdbd);
+    }
+
+    /* UPLOAD INSTRUCTION */
+    .upload-note {
+        background: rgba(255, 255, 255, 0.4);
+        padding: 15px;
+        border-radius: 15px;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        color: #555;
+        border: 1px dashed rgba(216, 27, 96, 0.3);
+    }
+
+    .upload-note strong {
+        color: #d81b60;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        body.gallery-page {
+            padding: 80px 10px 20px 10px;
+        }
+        .gallery-container {
+            width: 95%;
+            padding: 30px 20px;
+        }
+        h1 { font-size: 2rem; }
+        .subtitle { font-size: 1rem; }
+        .slideshow { height: 350px; }
+        .photo-placeholder { height: 250px; font-size: 60px; }
+        .nav-btn { width: 40px; height: 40px; font-size: 20px; }
+        .caption { font-size: 1.1rem; }
+        .btn {
+            padding: 10px 25px;
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        body.gallery-page {
+            padding: 60px 5px 20px 5px;
+        }
+        h1 { font-size: 1.8rem; }
+        .gallery-container {
+            padding: 25px 15px;
+            margin: 40px auto 20px auto;
+        }
+        .slideshow { height: 300px; }
+        .photo-placeholder { height: 220px; }
+        .caption { font-size: 1rem; }
+    }
+</style>
+</head>
+<body class="gallery-page">
+
+<div class="hearts"></div>
+
+<div class="gallery-container">
+    <h1>💕 Our Beautiful Memories 💕</h1>
+    <p class="subtitle">Every moment with you is a treasure</p>
+
+    <div class="counter">
+        <span id="currentSlide">1</span> / <span id="totalSlides">11</span>
+    </div>
+
+    <div class="slideshow-wrapper">
+        <div class="slideshow" id="slideshow">
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <div class="photo-placeholder">
+                    <img src="images/FirstDate.jpg" alt="Our First Date">
+                </div>
+                <div class="caption">Our First Date 💖</div>
+            </div>
+            
+            <!-- Slide 2 -->
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <img src="images/bighead.jpg" alt="Surprise">
+                </div>
+                <div class="caption">See her big head 😂😂</div>
+            </div>
+            
+            <!-- Slide 3 -->
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <img src="images/Photo3.jpg" alt="Celebration">
+                </div>
+                <div class="caption">Don't even remember what we were doing 😂</div>
+            </div>
+            
+            <!-- Slide 4 -->
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <img src="images/photo4.jpg" alt="Sunset">
+                </div>
+                <div class="caption">You take the weirdest photos man 😂</div>
+            </div>
+            
+            <!-- Slide 5 - VIDEO 1 -->
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <video controls loop muted playsinline>
+                        <source src="images/video1.mp4" type="video/mp4">
+                        Your browser doesn't support videos
+                    </video>
+                </div>
+                <div class="caption">Such a finished woman 😂 🎥</div>
+            </div>
+
+            <!-- Slide 6 - VIDEO 2 -->
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <video controls loop muted playsinline>
+                        <source src="images/video2.mp4" type="video/mp4">
+                        Your browser doesn't support videos
+                    </video>
+                </div>
+                <div class="caption">Still my favorite video of us 🥹❤️</div>
+            </div>
+            
+            <!-- Slide 7 -->
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <img src="images/Photo5.jpg" alt="Forever">
+                </div>
+                <div class="caption">Together Always & Forever 🥹❤️</div>
+            </div>
+
+            <!-- Slide 8 -->
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <img src="images/Photo6.jpg" alt="Foodie">
+                </div>
+                <div class="caption">See am Foodie, for food only😂😂</div>
+            </div>
+
+            <!-- Slide 9 - VIDEO 3 -->
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <video controls loop muted playsinline>
+                        <source src="images/video3.mp4" type="video/mp4">
+                        Your browser doesn't support videos
+                    </video>
+                </div>
+                <div class="caption">Make person teach this girl twerking 😂😂</div>
+            </div>
+
+            <!-- Slide 10 -->
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <img src="images/Photo7.jpg" alt="Best Friend">
+                </div>
+                <div class="caption">My best friend 🥹❤️</div>
+            </div>
+
+             <div class="slide">
+                <div class="photo-placeholder">
+                    <video controls loop muted playsinline>
+                        <source src="images/video4.mp4" type="video/mp4">
+                        Your browser doesn't support videos
+                    </video>
+                </div>
+                <div class="caption">Our first valentine see how person dey chop😂😂</div>
+            </div>
+
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <video controls loop muted playsinline>
+                        <source src="images/video5.mp4" type="video/mp4">
+                        Your browser doesn't support videos
+                    </video>
+                </div>
+                <div class="caption">A very obsessed woman🥹❤️</div>
+            </div>
+
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <video controls loop muted playsinline>
+                        <source src="images/video6.mp4" type="video/mp4">
+                        Your browser doesn't support videos
+                    </video>
+                </div>
+                <div class="caption">Omo she came to rape me o😂😂</div>
+            </div>
+
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <video controls loop muted playsinline>
+                        <source src="images/video7.mp4" type="video/mp4">
+                        Your browser doesn't support videos
+                    </video>
+                </div>
+                <div class="caption">Showed me now showed me now is it not me that buyed the phone😂😂</div>
+            </div>
+
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <video controls loop muted playsinline>
+                        <source src="images/video8.mp4" type="video/mp4">
+                        Your browser doesn't support videos
+                    </video>
+                </div>
+                <div class="caption">one of my favorite moments. This one have started learning bad things😂😂</div>
+            </div>
+
+           <!-- Slide 11 -->
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <img src="images/Photo9.jpg" alt="Blessing">
+                </div>
+                <div class="caption">This was actually super cute when she sent it! obsessed woman🥹❤️</div>
+            </div>
+            
+             <div class="slide">
+                <div class="photo-placeholder">
+                    <video controls loop muted playsinline>
+                        <source src="images/video9.mp4" type="video/mp4">
+                        Your browser doesn't support videos
+                    </video>
+                </div>
+                <div class="caption">This remains my favorite video of you! i lost count how many times i watched this, beauty that feels like grace🥹❤️</div>
+            </div>
+
+            <!-- Slide 11 -->
+            <div class="slide">
+                <div class="photo-placeholder">
+                    <img src="images/Photo8.jpg" alt="Blessing">
+                </div>
+                <div class="caption">Everyday with you is a blessing that i dont take for granted 🥹❤️</div>
+            </div>
+
+        </div>
+
+        <button class="nav-btn prev-btn" onclick="changeSlide(-1)">‹</button>
+        <button class="nav-btn next-btn" onclick="changeSlide(1)">›</button>
+    </div>
+
+    <div class="dots" id="dotsContainer"></div>
+
+    <div class="action-buttons">
+        <button class="btn" onclick="autoPlay()">▶️ Auto Play</button>
+        <button class="btn secondary" onclick="location.href='love-list.html'">💝 What I Love</button>
+        <button class="btn secondary" onclick="location.href='yes.html'">💌 Love Letter</button>
+        <button class="btn secondary" onclick="location.href='photo-wheel.html'">✨ Our Photo Wheel</button>
+        <button class="btn secondary" onclick="location.href='index.html'">🏠 Home</button>
+    </div>
+
+    <div class="upload-note">
+        <strong>💡 Your Photos:</strong><br>
+       These weren't all the Photos but these were my favorites ❤️❤️❤️❤️❤️
+    </div>
+</div>
+
+<script>
+    // ==========================
+    // HEARTS ANIMATION
+    // ==========================
+    const heartsContainer = document.querySelector(".hearts");
+    const emojis = ["❤️", "💖", "💘", "💕", "💓"];
+
+    function createHeart() {
+        if (!heartsContainer) return;
+        
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+
+        const startX = Math.random() * 100;
+        heart.style.left = startX + "vw";
+        const size = Math.random() * 20 + 15;
+        heart.style.fontSize = size + "px";
+
+        const duration = Math.random() * 3 + 4;
+        heart.style.animationDuration = duration + "s";
+
+        const color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+        heart.style.color = color;
+        heart.style.textShadow = `0 0 5px ${color}, 0 0 10px ${color}, 0 0 15px ${color}`;
+
+        heartsContainer.appendChild(heart);
+
+        setTimeout(() => heart.remove(), duration * 1000);
+    }
+
+    setInterval(createHeart, 150);
+
+    // ==========================
+    // SLIDESHOW FUNCTIONALITY
+    // ==========================
+    let currentSlide = 0;
+    let autoPlayInterval = null;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    document.getElementById('totalSlides').textContent = totalSlides;
+
+    const dotsContainer = document.getElementById('dotsContainer');
+    for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (i === 0 ? ' active' : '');
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+    }
+
+    function showSlide(n) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        document.querySelectorAll('.dot').forEach(dot => dot.classList.remove('active'));
+        
+        currentSlide = (n + totalSlides) % totalSlides;
+        slides[currentSlide].classList.add('active');
+        document.querySelectorAll('.dot')[currentSlide].classList.add('active');
+        document.getElementById('currentSlide').textContent = currentSlide + 1;
+        
+        // Pause all videos first
+        document.querySelectorAll('video').forEach(video => video.pause());
+        
+        for(let i = 0; i < 5; i++) createHeart();
+    }
+
+    function changeSlide(direction) {
+        showSlide(currentSlide + direction);
+        if (autoPlayInterval) stopAutoPlay();
+    }
+
+    function goToSlide(n) {
+        showSlide(n);
+        if (autoPlayInterval) stopAutoPlay();
+    }
+
+    function autoPlay() {
+        if (autoPlayInterval) {
+            stopAutoPlay();
+            return;
+        }
+        
+        autoPlayInterval = setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, 3000);
+        
+        event.target.textContent = '⏸️ Pause';
+    }
+
+    function stopAutoPlay() {
+        clearInterval(autoPlayInterval);
+        autoPlayInterval = null;
+        document.querySelector('.action-buttons .btn').textContent = '▶️ Auto Play';
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') changeSlide(-1);
+        if (e.key === 'ArrowRight') changeSlide(1);
+    });
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.querySelector('.slideshow').addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+
+    document.querySelector('.slideshow').addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+
+    function handleSwipe() {
+        if (touchEndX < touchStartX - 50) changeSlide(1);
+        if (touchEndX > touchStartX + 50) changeSlide(-1);
+    }
+
+    for(let i = 0; i < 20; i++) createHeart();
+</script>
+</body>
+</html>

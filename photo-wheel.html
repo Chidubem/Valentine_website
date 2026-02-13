@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Beautiful Moments 💕</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+<style>
+    /* BODY */
+    body.photo-wheel-page {
+        margin: 0;
+        min-height: 100vh;
+        height: auto !important;
+        padding: 120px 20px 60px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4, #ffdde1, #fbc2eb);
+        background-size: 400% 400%;
+        animation: gradientMove 15s ease infinite;
+        overflow-x: hidden;
+        overflow-y: auto !important;
+    }
+
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* HEARTS BACKGROUND */
+    .hearts {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: visible;
+        z-index: 0;
+    }
+
+    .heart {
+        position: absolute;
+        bottom: -10px;
+        font-size: 20px;
+        animation: floatUp linear infinite;
+        opacity: 0.8;
+        text-shadow: 0 0 10px rgba(255,0,0,0.5);
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0; }
+        20% { opacity: 1; }
+        50% { transform: translateY(-50vh) scale(1.2) rotate(15deg); }
+        100% { transform: translateY(-110vh) scale(1.5) rotate(-15deg); opacity: 0; }
+    }
+
+    /* CONTAINER */
+    .container {
+        max-width: 1000px;
+        width: 90%;
+        padding: 60px 40px;
+        margin: 20px auto 40px auto;
+        border-radius: 40px;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(30px) saturate(160%);
+        -webkit-backdrop-filter: blur(30px) saturate(160%);
+        border: 1.5px solid rgba(255, 255, 255, 0.5);
+        box-shadow:
+            0 20px 50px rgba(0, 0, 0, 0.1),
+            0 0 50px rgba(255, 77, 109, 0.4);
+        position: relative;
+        z-index: 10;
+        text-align: center;
+    }
+
+    h1 {
+        color: #d81b60;
+        font-size: 3rem;
+        margin-bottom: 50px;
+        letter-spacing: 2px;
+        text-shadow: 0 0 15px #ff4d6d;
+    }
+
+    /* PHOTO WHEEL */
+    .photo-wheel {
+        position: relative;
+        width: 700px;
+        height: 700px;
+        margin: 50px auto 60px;
+    }
+
+    /* CENTER PHOTO (BIG) */
+    .center-photo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 5px solid white;
+        box-shadow: 0 15px 40px rgba(255, 77, 109, 0.6);
+        z-index: 5;
+        transition: all 0.4s ease;
+        cursor: pointer;
+    }
+
+    .center-photo:hover {
+        transform: translate(-50%, -50%) scale(1.15);
+        box-shadow: 0 20px 50px rgba(255, 77, 109, 0.8);
+    }
+
+    .center-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* SURROUNDING PHOTOS */
+    .orbit-photo {
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid white;
+        box-shadow: 0 10px 30px rgba(255, 77, 109, 0.5);
+        transition: all 0.4s ease;
+        cursor: pointer;
+    }
+
+    .orbit-photo:hover {
+        transform: scale(1.2);
+        box-shadow: 0 15px 40px rgba(255, 77, 109, 0.7);
+        z-index: 6;
+    }
+
+    .orbit-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Position 6 photos in a circle around center */
+    .orbit-photo:nth-child(2) {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .orbit-photo:nth-child(3) {
+        top: 110px;
+        right: 30px;
+        transform: rotate(60deg);
+    }
+
+    .orbit-photo:nth-child(4) {
+        bottom: 110px;
+        right: 30px;
+        transform: rotate(120deg);
+    }
+
+    .orbit-photo:nth-child(5) {
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%) rotate(180deg);
+    }
+
+    .orbit-photo:nth-child(6) {
+        bottom: 110px;
+        left: 30px;
+        transform: rotate(240deg);
+    }
+
+    .orbit-photo:nth-child(7) {
+        top: 110px;
+        left: 30px;
+        transform: rotate(300deg);
+    }
+
+    /* MESSAGE SECTION */
+    .love-message {
+        font-family: 'Dancing Script', cursive;
+        font-size: 1.5rem;
+        line-height: 1.8;
+        color: #d81b60;
+        margin: 40px auto;
+        max-width: 700px;
+        padding: 30px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(255, 77, 109, 0.3);
+        white-space: pre-wrap;
+    }
+
+    /* BUTTONS */
+    .buttons {
+        margin-top: 40px;
+    }
+
+    .yes-btn {
+        background: linear-gradient(45deg, #ff4d6d, #ff758f);
+        border: none;
+        padding: 15px 45px;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+        margin: 10px;
+    }
+
+    .yes-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 15px 35px rgba(255, 77, 109, 0.6);
+    }
+
+    /* SPECIAL SPARKLE EFFECTS */
+    .sparkle-ring {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 3px solid transparent;
+        animation: sparkleRotate 3s linear infinite;
+        pointer-events: none;
+    }
+
+    .center-photo .sparkle-ring {
+        border: 3px solid rgba(255, 215, 0, 0.6);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 
+                    inset 0 0 20px rgba(255, 215, 0, 0.4);
+    }
+
+    .orbit-photo .sparkle-ring {
+        border: 2px solid rgba(255, 105, 180, 0.6);
+        box-shadow: 0 0 15px rgba(255, 105, 180, 0.7),
+                    inset 0 0 15px rgba(255, 105, 180, 0.3);
+    }
+
+    @keyframes sparkleRotate {
+        0% { 
+            transform: rotate(0deg) scale(1);
+            opacity: 0.6;
+        }
+        50% { 
+            transform: rotate(180deg) scale(1.05);
+            opacity: 1;
+        }
+        100% { 
+            transform: rotate(360deg) scale(1);
+            opacity: 0.6;
+        }
+    }
+
+    /* PULSING GLOW ON PHOTOS */
+    .center-photo::after {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,215,0,0.4) 0%, transparent 70%);
+        animation: pulseGlow 2s ease-in-out infinite;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .orbit-photo::after {
+        content: '';
+        position: absolute;
+        top: -8px;
+        left: -8px;
+        right: -8px;
+        bottom: -8px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,105,180,0.3) 0%, transparent 70%);
+        animation: pulseGlow 2.5s ease-in-out infinite;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    @keyframes pulseGlow {
+        0%, 100% {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+    }
+
+    /* FLOATING SPARKLES */
+    .sparkle {
+        position: absolute;
+        pointer-events: none;
+        font-size: 20px;
+        animation: floatSparkle 3s ease-in-out infinite;
+        z-index: 100;
+    }
+
+    @keyframes floatSparkle {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    /* CONFETTI */
+    .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        pointer-events: none;
+        z-index: 1000;
+    }
+
+    @keyframes confettiFall {
+        to {
+            transform: translateY(100vh) rotate(720deg);
+            opacity: 0;
+        }
+    }
+
+    /* MAGIC TRAIL ON WHEEL */
+    .magic-particle {
+        position: fixed;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 100;
+        animation: fadeOut 1s ease-out forwards;
+    }
+
+    @keyframes fadeOut {
+        to {
+            transform: scale(2);
+            opacity: 0;
+        }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        body.photo-wheel-page {
+            padding: 80px 10px 20px 10px;
+        }
+        
+        .container {
+            margin: 40px auto 20px auto;
+        }
+        
+        .photo-wheel {
+            width: 500px;
+            height: 500px;
+        }
+
+        .center-photo {
+            width: 200px;
+            height: 200px;
+        }
+
+        .orbit-photo {
+            width: 150px;
+            height: 150px;
+        }
+
+        .orbit-photo:nth-child(2) {
+            top: 15px;
+        }
+
+        .orbit-photo:nth-child(3) {
+            right: 25px;
+            top: 80px;
+        }
+
+        .orbit-photo:nth-child(4) {
+            right: 25px;
+            bottom: 80px;
+        }
+
+        .orbit-photo:nth-child(5) {
+            bottom: 15px;
+        }
+
+        .orbit-photo:nth-child(6) {
+            left: 25px;
+            bottom: 80px;
+        }
+
+        .orbit-photo:nth-child(7) {
+            left: 25px;
+            top: 80px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+        }
+
+        .love-message {
+            font-size: 1.2rem;
+            padding: 20px;
+        }
+
+        .yes-btn {
+            padding: 12px 30px;
+            font-size: 16px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        body.photo-wheel-page {
+            padding: 60px 5px 20px 5px;
+        }
+        
+        .photo-wheel {
+            width: 380px;
+            height: 380px;
+            margin: 30px auto 40px;
+        }
+
+        .center-photo {
+            width: 150px;
+            height: 150px;
+        }
+
+        .orbit-photo {
+            width: 115px;
+            height: 115px;
+        }
+
+        .orbit-photo:nth-child(2) {
+            top: 12px;
+        }
+
+        .orbit-photo:nth-child(3) {
+            right: 18px;
+            top: 62px;
+        }
+
+        .orbit-photo:nth-child(4) {
+            right: 18px;
+            bottom: 62px;
+        }
+
+        .orbit-photo:nth-child(5) {
+            bottom: 12px;
+        }
+
+        .orbit-photo:nth-child(6) {
+            left: 18px;
+            bottom: 62px;
+        }
+
+        .orbit-photo:nth-child(7) {
+            left: 18px;
+            top: 62px;
+        }
+    }
+
+    /* ROTATING ANIMATION FOR ORBIT PHOTOS */
+    @keyframes gentleRotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .photo-wheel {
+        animation: gentleRotate 60s linear infinite;
+    }
+
+    .orbit-photo img,
+    .center-photo img {
+        animation: gentleRotate 60s linear infinite reverse;
+    }
+
+</style>
+</head>
+<body class="photo-wheel-page">
+
+<!-- Floating hearts -->
+<div class="hearts"></div>
+
+<div class="container">
+    <h1>💕 Our Beautiful Moments 💕</h1>
+
+    <!-- PHOTO WHEEL -->
+    <div class="photo-wheel">
+        <!-- CENTER PHOTO -->
+        <div class="center-photo" id="centerPhotoDiv">
+            <img src="images/Photo8.jpg" 
+                 alt="Center Photo" id="centerImg">
+            <div class="sparkle-ring"></div>
+        </div>
+
+        <!-- SURROUNDING PHOTOS -->
+        <div class="orbit-photo" id="photo1Div">
+            <img src="images/Photo7.jpg" 
+                 alt="Photo 1" id="img1">
+            <div class="sparkle-ring"></div>
+        </div>
+        <div class="orbit-photo" id="photo2Div">
+            <img src="images/Photo10.jpg" 
+                 alt="Photo 2" id="img2">
+            <div class="sparkle-ring"></div>
+        </div>
+        <div class="orbit-photo" id="photo3Div">
+            <img src="images/Photo11.jpg" 
+                 alt="Photo 3" id="img3">
+            <div class="sparkle-ring"></div>
+        </div>
+        <div class="orbit-photo" id="photo4Div">
+            <img src="images/Photo12.jpg" 
+                 alt="Photo 4" id="img4">
+            <div class="sparkle-ring"></div>
+        </div>
+        <div class="orbit-photo" id="photo5Div">
+            <img src="images/Photo13.jpg" 
+                 alt="Photo 5" id="img5">
+            <div class="sparkle-ring"></div>
+        </div>
+        <div class="orbit-photo" id="photo6Div">
+            <img src="images/Photo14.jpg" 
+                 alt="Photo 6" id="img6">
+            <div class="sparkle-ring"></div>
+        </div>
+    </div>
+
+    <!-- LOVE MESSAGE -->
+    <div class="love-message">
+Every moment with you is a treasure. 
+Each photo captures a piece of our story.
+A story of laughter, love, and endless joy.
+
+You make every day brighter, every memory sweeter.
+These pictures are just glimpses of the beautiful journey 
+we're on together.
+
+Here's to many more moments, many more memories,
+and a lifetime of love.
+
+Happy valentines day my big baby ❤️❤️❤️
+
+Forever and always,
+Your Superman 💕
+    </div>
+
+    <!-- NAVIGATION BUTTONS -->
+    <div class="buttons">
+        <button onclick="location.href='love-list.html'" class="yes-btn">💕 What I Love About You</button>
+        <button onclick="location.href='gallery.html'" class="yes-btn">📸 View Gallery</button>
+        <button onclick="location.href='yes.html'" class="yes-btn">💖 Back to Letter</button>
+        <button onclick="location.href='index.html'" class="yes-btn">🏠 Home</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+    // Create extra hearts for celebration
+    for(let i = 0; i < 40; i++) createHeart();
+
+    // CONFETTI BURST EFFECT
+    function createConfetti(x, y) {
+        const colors = ['#ff4d6d', '#ff758f', '#ffd700', '#ff69b4', '#ff1493', '#ffc0cb'];
+        const confettiCount = 30;
+        
+        for (let i = 0; i < confettiCount; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = x + 'px';
+            confetti.style.top = y + 'px';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            const angle = (Math.PI * 2 * i) / confettiCount;
+            const velocity = 100 + Math.random() * 100;
+            const tx = Math.cos(angle) * velocity;
+            const ty = Math.sin(angle) * velocity;
+            
+            confetti.style.animation = `confettiFall ${1 + Math.random()}s ease-out forwards`;
+            confetti.style.transform = `translate(${tx}px, ${ty}px)`;
+            
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 2000);
+        }
+    }
+
+    // FLOATING SPARKLES
+    function createSparkles(element) {
+        const sparkleEmojis = ['✨', '💫', '⭐', '🌟', '💖', '💕'];
+        const rect = element.getBoundingClientRect();
+        
+        for (let i = 0; i < 8; i++) {
+            setTimeout(() => {
+                const sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                sparkle.innerText = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+                sparkle.style.left = (rect.left + rect.width / 2 - 10) + 'px';
+                sparkle.style.top = (rect.top + rect.height / 2 - 10) + 'px';
+                sparkle.style.animationDelay = (i * 0.15) + 's';
+                
+                const randomX = (Math.random() - 0.5) * 100;
+                sparkle.style.transform = `translateX(${randomX}px)`;
+                
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 3000);
+            }, i * 100);
+        }
+    }
+
+    // MAGIC PARTICLE TRAIL
+    function createMagicParticle(x, y) {
+        const particle = document.createElement('div');
+        particle.classList.add('magic-particle');
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+        
+        const colors = ['#ffd700', '#ff69b4', '#ff4d6d', '#87ceeb'];
+        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.boxShadow = `0 0 10px ${particle.style.backgroundColor}`;
+        
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 1000);
+    }
+
+    // Add magic trail to photo wheel
+    const photoWheel = document.querySelector('.photo-wheel');
+    let lastParticleTime = 0;
+    photoWheel.addEventListener('mousemove', (e) => {
+        const now = Date.now();
+        if (now - lastParticleTime > 50) {
+            createMagicParticle(e.clientX, e.clientY);
+            lastParticleTime = now;
+        }
+    });
+
+    // Hidden file inputs
+    const fileInputs = {
+        center: createHiddenInput('centerImg'),
+        img1: createHiddenInput('img1'),
+        img2: createHiddenInput('img2'),
+        img3: createHiddenInput('img3'),
+        img4: createHiddenInput('img4'),
+        img5: createHiddenInput('img5'),
+        img6: createHiddenInput('img6')
+    };
+
+    function createHiddenInput(imgId) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.style.display = 'none';
+        input.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = document.getElementById(imgId);
+                    const photoDiv = img.parentElement;
+                    
+                    img.src = event.target.result;
+                    // Save to localStorage
+                    localStorage.setItem(imgId, event.target.result);
+                    
+                    // CELEBRATION EFFECTS!
+                    const rect = photoDiv.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    
+                    createConfetti(centerX, centerY);
+                    createSparkles(photoDiv);
+                    
+                    // Play success sound
+                    playSuccessSound();
+                    
+                    // Animate the photo
+                    photoDiv.style.transition = 'transform 0.5s ease';
+                    photoDiv.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        photoDiv.style.transform = '';
+                    }, 500);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        document.body.appendChild(input);
+        return input;
+    }
+
+    // SUCCESS SOUND
+    function playSuccessSound() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Happy ascending chime
+            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+            oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+            oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+        } catch(e) {
+            console.log('Audio not supported');
+        }
+    }
+
+    // Make photos clickable
+    function makePhotoClickable(photoId, inputKey) {
+        const photo = document.getElementById(photoId);
+        const photoDiv = photo.parentElement;
+        
+        photoDiv.style.cursor = 'pointer';
+        photoDiv.title = 'Click to upload your photo';
+        
+        photoDiv.addEventListener('click', function(e) {
+            e.stopPropagation();
+            fileInputs[inputKey].click();
+        });
+        
+        // Hover effect with sparkle
+        photoDiv.addEventListener('mouseenter', function() {
+            const rect = photoDiv.getBoundingClientRect();
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.innerText = '✨';
+                    sparkle.style.position = 'absolute';
+                    sparkle.style.left = (rect.left + Math.random() * rect.width) + 'px';
+                    sparkle.style.top = (rect.top + Math.random() * rect.height) + 'px';
+                    sparkle.style.fontSize = '20px';
+                    sparkle.style.pointerEvents = 'none';
+                    sparkle.style.zIndex = '1000';
+                    sparkle.style.animation = 'floatSparkle 1s ease-out forwards';
+                    document.body.appendChild(sparkle);
+                    setTimeout(() => sparkle.remove(), 1000);
+                }, i * 100);
+            }
+        });
+        
+        // Load from localStorage if available
+        const savedImage = localStorage.getItem(photoId);
+        if (savedImage) {
+            photo.src = savedImage;
+        }
+    }
+
+    // Setup all photos
+    makePhotoClickable('centerImg', 'center');
+    makePhotoClickable('img1', 'img1');
+    makePhotoClickable('img2', 'img2');
+    makePhotoClickable('img3', 'img3');
+    makePhotoClickable('img4', 'img4');
+    makePhotoClickable('img5', 'img5');
+    makePhotoClickable('img6', 'img6');
+
+    // Continuous sparkle effect on wheel
+    setInterval(() => {
+        const wheel = document.querySelector('.photo-wheel');
+        const rect = wheel.getBoundingClientRect();
+        const sparkle = document.createElement('div');
+        sparkle.innerText = '✨';
+        sparkle.style.position = 'fixed';
+        sparkle.style.left = (rect.left + Math.random() * rect.width) + 'px';
+        sparkle.style.top = (rect.top + Math.random() * rect.height) + 'px';
+        sparkle.style.fontSize = '15px';
+        sparkle.style.pointerEvents = 'none';
+        sparkle.style.zIndex = '5';
+        sparkle.style.animation = 'floatSparkle 2s ease-out forwards';
+        document.body.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 2000);
+    }, 1000);
+</script>
+</body>
+</html>

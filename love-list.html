@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What I Love About You 💕</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+<style>
+    /* BODY AND BACKGROUND */
+    body.love-list-page {
+        margin: 0;
+        min-height: 100vh;
+        height: auto !important;
+        padding: 120px 20px 60px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4, #ffdde1, #fbc2eb);
+        background-size: 400% 400%;
+        animation: gradientMove 15s ease infinite;
+        overflow-x: hidden;
+        overflow-y: auto !important;
+    }
+
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* HEARTS BACKGROUND */
+    .hearts {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 0;
+    }
+
+    .heart {
+        position: absolute;
+        bottom: -10px;
+        font-size: 20px;
+        animation: floatUp linear infinite;
+        opacity: 0.8;
+        text-shadow: 0 0 10px rgba(255,0,0,0.5);
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0; }
+        20% { opacity: 1; }
+        50% { transform: translateY(-50vh) scale(1.2) rotate(15deg); }
+        100% { transform: translateY(-110vh) scale(1.5) rotate(-15deg); opacity: 0; }
+    }
+
+    /* CONTAINER */
+    .container.ice-frosted {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 50px 40px;
+        border-radius: 40px;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(30px) saturate(160%);
+        -webkit-backdrop-filter: blur(30px) saturate(160%);
+        border: 1.5px solid rgba(255, 255, 255, 0.5);
+        box-shadow:
+            0 20px 50px rgba(0, 0, 0, 0.1),
+            0 0 50px rgba(255, 77, 109, 0.4);
+        position: relative;
+        z-index: 10;
+        transition: all 0.5s ease;
+    }
+
+    h1 {
+        color: #d81b60;
+        font-size: 2.8rem;
+        text-align: center;
+        margin-bottom: 15px;
+        letter-spacing: 2px;
+        text-shadow: 0 0 15px #ff4d6d;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #555;
+        font-size: 1.2rem;
+        margin-bottom: 40px;
+        font-style: italic;
+    }
+
+    /* CARD COUNTER */
+    .card-counter {
+        text-align: center;
+        font-size: 1.1rem;
+        color: #d81b60;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    /* LOVE ITEMS CARD STACK */
+    .love-items {
+        position: relative;
+        height: 450px;
+        margin-bottom: 40px;
+        perspective: 1000px;
+    }
+
+    .love-item {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 700px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 200, 220, 0.4));
+        background-size: 200% 200%;
+        animation: gradientShift 4s ease infinite;
+        backdrop-filter: blur(15px);
+        padding: 40px 35px;
+        border-radius: 25px;
+        border: 2px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 0 15px 40px rgba(255, 77, 109, 0.3);
+        transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        opacity: 0;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    /* Cards behind current - stacked */
+    .love-item:not(.active):not(.next) {
+        transform: translateX(-50%) scale(0.9) translateY(20px);
+        opacity: 0;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    /* Next card peek */
+    .love-item.next {
+        transform: translateX(-50%) scale(0.95) translateY(12px);
+        opacity: 0.4;
+        z-index: 2;
+        pointer-events: none;
+        filter: blur(2px);
+    }
+
+    /* Active card */
+    .love-item.active {
+        transform: translateX(-50%) scale(1) translateY(0);
+        opacity: 1;
+        z-index: 10;
+        box-shadow: 0 20px 60px rgba(255, 77, 109, 0.5);
+        animation: cardEntrance 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    @keyframes cardEntrance {
+        0% {
+            transform: translateX(-50%) scale(0.8) translateY(50px) rotateY(20deg);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(-50%) scale(1) translateY(0) rotateY(0deg);
+            opacity: 1;
+        }
+    }
+
+    /* Card exit animations */
+    .love-item.exit-left {
+        animation: slideOutLeft 0.6s ease forwards;
+    }
+
+    .love-item.exit-right {
+        animation: slideOutRight 0.6s ease forwards;
+    }
+
+    @keyframes slideOutLeft {
+        to {
+            transform: translateX(-150%) scale(0.8) rotate(-20deg);
+            opacity: 0;
+        }
+    }
+
+    @keyframes slideOutRight {
+        to {
+            transform: translateX(50%) scale(0.8) rotate(20deg);
+            opacity: 0;
+        }
+    }
+
+    .love-item-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .love-emoji {
+        font-size: 3rem;
+        animation: float 3s ease-in-out infinite;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        25% { transform: translateY(-8px) rotate(-5deg); }
+        50% { transform: translateY(-15px) rotate(0deg); }
+        75% { transform: translateY(-8px) rotate(5deg); }
+    }
+
+    .love-item.active .love-emoji {
+        filter: drop-shadow(0 0 15px rgba(255, 77, 109, 0.8));
+    }
+
+    .love-title {
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: #d81b60;
+        flex: 1;
+        text-shadow: 0 0 10px rgba(216, 27, 96, 0.3);
+    }
+
+    .love-description {
+        color: #555;
+        font-size: 1.1rem;
+        line-height: 1.7;
+        padding-left: 65px;
+    }
+
+    /* NAVIGATION BUTTONS */
+    .nav-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+
+    .nav-btn {
+        background: linear-gradient(45deg, #ff4d6d, #ff758f);
+        border: none;
+        padding: 15px 40px;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .nav-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .nav-btn:not(:disabled):hover {
+        transform: scale(1.1) translateY(-3px);
+        box-shadow: 0 15px 35px rgba(255, 77, 109, 0.6);
+    }
+
+    .nav-btn:not(:disabled):active {
+        transform: scale(0.95);
+    }
+
+    /* SWIPE INDICATORS */
+    .swipe-hint {
+        text-align: center;
+        color: #d81b60;
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+        opacity: 0.7;
+        animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 1; }
+    }
+
+    /* CLOSING MESSAGE */
+    .closing-message {
+        font-family: 'Dancing Script', cursive;
+        font-size: 1.6rem;
+        text-align: center;
+        color: #d81b60;
+        margin: 40px 0;
+        padding: 25px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(255, 77, 109, 0.3);
+        line-height: 1.8;
+        display: none;
+        animation: fadeIn 1s ease;
+    }
+
+    .closing-message.show {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* BUTTONS */
+    .buttons {
+        text-align: center;
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .yes-btn {
+        background: linear-gradient(45deg, #ff4d6d, #ff758f);
+        border: none;
+        padding: 15px 35px;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+    }
+
+    .yes-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 15px 35px rgba(255, 77, 109, 0.6);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        body.love-list-page {
+            padding: 80px 10px 20px 10px;
+        }
+        h1 { font-size: 2.2rem; }
+        .love-item { padding: 30px 25px; }
+        .love-emoji { font-size: 2.5rem; }
+        .love-title { font-size: 1.3rem; }
+        .love-description { padding-left: 50px; font-size: 1rem; }
+        .container.ice-frosted { padding: 40px 25px; }
+        .love-items { height: 500px; }
+    }
+
+    @media (max-width: 480px) {
+        body.love-list-page {
+            padding: 60px 5px 20px 5px;
+        }
+        .container.ice-frosted {
+            margin: 40px auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body class="love-list-page">
+
+<!-- Floating hearts -->
+<div class="hearts"></div>
+
+<div class="container ice-frosted">
+    <h1>💝 What I Love About You 💝</h1>
+    <p class="subtitle">Here are just a few of the infinite reasons I love you, Chisom</p>
+
+    <div class="card-counter">
+        <span id="currentCard">1</span> / <span id="totalCards">10</span>
+    </div>
+
+    <div class="swipe-hint">👆 Tap card or use buttons to navigate</div>
+
+    <div class="love-items" id="cardStack">
+        <div class="love-item active" data-index="0">
+            <div class="love-item-header">
+                <span class="love-emoji">😊</span>
+                <span class="love-title">Your Smile</span>
+            </div>
+            <p class="love-description">
+                Your smile lights up my entire world. It's the first thing I think about in the morning and the last thing I picture before I sleep.
+            </p>
+        </div>
+
+        <div class="love-item next" data-index="1">
+            <div class="love-item-header">
+                <span class="love-emoji">💪</span>
+                <span class="love-title">Your Strength</span>
+            </div>
+            <p class="love-description">
+                The way you handle challenges with grace and determination inspires me every single day. You're stronger than you know.
+            </p>
+        </div>
+
+        <div class="love-item" data-index="2">
+            <div class="love-item-header">
+                <span class="love-emoji">😂</span>
+                <span class="love-title">Your Laugh</span>
+            </div>
+            <p class="love-description">
+                Your laughter is my favorite sound in the world. It's contagious, genuine, and makes even the worst days better.
+            </p>
+        </div>
+
+        <div class="love-item" data-index="3">
+            <div class="love-item-header">
+                <span class="love-emoji">💭</span>
+                <span class="love-title">Your Mind</span>
+            </div>
+            <p class="love-description">
+                I love our deep conversations, your unique perspectives, and the way you challenge me to think differently.
+            </p>
+        </div>
+
+        <div class="love-item" data-index="4">
+            <div class="love-item-header">
+                <span class="love-emoji">❤️</span>
+                <span class="love-title">Your Heart</span>
+            </div>
+            <p class="love-description">
+                Your kindness, compassion, and the way you care for others shows the beautiful person you are inside and out.
+            </p>
+        </div>
+
+        <div class="love-item" data-index="5">
+            <div class="love-item-header">
+                <span class="love-emoji">🌟</span>
+                <span class="love-title">Your Ambition</span>
+            </div>
+            <p class="love-description">
+                I admire how you pursue your dreams with passion and never settle for anything less than what you deserve.
+            </p>
+        </div>
+
+        <div class="love-item" data-index="6">
+            <div class="love-item-header">
+                <span class="love-emoji">🤗</span>
+                <span class="love-title">Your Presence</span>
+            </div>
+            <p class="love-description">
+                Just being around you makes everything better. You make ordinary moments feel extraordinary.
+            </p>
+        </div>
+
+        <div class="love-item" data-index="7">
+            <div class="love-item-header">
+                <span class="love-emoji">🎨</span>
+                <span class="love-title">Your Uniqueness</span>
+            </div>
+            <p class="love-description">
+                All your little quirks, your style, your way of seeing the world, you're one of a kind, and I wouldn't change a thing.
+            </p>
+        </div>
+
+        <div class="love-item" data-index="8">
+            <div class="love-item-header">
+                <span class="love-emoji">🌈</span>
+                <span class="love-title">Your Support</span>
+            </div>
+            <p class="love-description">
+                You're always there for me, believing in me even when I don't believe in myself. You're my rock and my cheerleader.
+            </p>
+        </div>
+
+        <div class="love-item" data-index="9">
+            <div class="love-item-header">
+                <span class="love-emoji">✨</span>
+                <span class="love-title">Everything About You</span>
+            </div>
+            <p class="love-description">
+                From the big things to the small things, from your strengths to your vulnerabilities, I love every part of you.
+            </p>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn" id="prevBtn" disabled>⬅️ Previous</button>
+        <button class="nav-btn" id="nextBtn">Next ➡️</button>
+    </div>
+
+    <div class="closing-message" id="closingMessage">
+        This list could go on forever, but the truth is simple:<br>
+        I love you for exactly who you are.<br>
+        Yesterday, today, tomorrow, and always.<br>
+        💕 Forever yours, Superman 💕
+    </div>
+
+    <div class="buttons">
+        <button onclick="location.href='yes.html'" class="yes-btn">❤️ Back to Letter</button>
+        <button onclick="location.href='gallery.html'" class="yes-btn">📸 View Memories</button>
+        <button onclick="location.href='index.html'" class="yes-btn">🏠 Home</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+    // Create extra hearts for celebration on page load
+    for(let i = 0; i < 40; i++) createHeart();
+
+    // Card navigation system
+    let currentIndex = 0;
+    const cards = document.querySelectorAll('.love-item');
+    const totalCards = cards.length;
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const currentCardDisplay = document.getElementById('currentCard');
+    const closingMessage = document.getElementById('closingMessage');
+
+    // Touch/swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function updateCards() {
+        cards.forEach((card, index) => {
+            card.classList.remove('active', 'next', 'exit-left', 'exit-right');
+            
+            if (index === currentIndex) {
+                card.classList.add('active');
+            } else if (index === currentIndex + 1) {
+                card.classList.add('next');
+            }
+        });
+
+        // Update counter
+        currentCardDisplay.textContent = currentIndex + 1;
+
+        // Update buttons
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex === totalCards - 1;
+
+        // Show closing message on last card
+        if (currentIndex === totalCards - 1) {
+            setTimeout(() => {
+                closingMessage.classList.add('show');
+                createHeartBurst();
+            }, 500);
+        } else {
+            closingMessage.classList.remove('show');
+        }
+
+        // Play sound
+        playCardSound();
+    }
+
+    function nextCard() {
+        if (currentIndex < totalCards - 1) {
+            cards[currentIndex].classList.add('exit-left');
+            setTimeout(() => {
+                currentIndex++;
+                updateCards();
+            }, 300);
+        }
+    }
+
+    function prevCard() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateCards();
+        }
+    }
+
+    // Button controls
+    nextBtn.addEventListener('click', nextCard);
+    prevBtn.addEventListener('click', prevCard);
+
+    // Click on active card to advance
+    document.getElementById('cardStack').addEventListener('click', (e) => {
+        if (e.target.closest('.love-item.active')) {
+            nextCard();
+        }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            nextCard();
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevCard();
+        }
+    });
+
+    // Touch/swipe support
+    document.getElementById('cardStack').addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+
+    document.getElementById('cardStack').addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        if (touchStartX - touchEndX > swipeThreshold) {
+            nextCard(); // Swipe left
+        } else if (touchEndX - touchStartX > swipeThreshold) {
+            prevCard(); // Swipe right
+        }
+    }
+
+    function playCardSound() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Card flip sound
+            oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.1);
+            
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.15);
+        } catch(e) {
+            console.log('Audio not supported');
+        }
+    }
+
+    function createHeartBurst() {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        
+        for(let i = 0; i < 30; i++) {
+            createBurstHeart(centerX, centerY, i);
+        }
+    }
+
+    function createBurstHeart(x, y, index) {
+        const heart = document.createElement('div');
+        heart.innerHTML = ['❤️', '💖', '💘', '💕', '💓'][Math.floor(Math.random() * 5)];
+        heart.style.position = 'fixed';
+        heart.style.left = x + 'px';
+        heart.style.top = y + 'px';
+        heart.style.fontSize = (Math.random() * 15 + 20) + 'px';
+        heart.style.pointerEvents = 'none';
+        heart.style.zIndex = '9999';
+        heart.style.transition = 'all 1.5s ease-out';
+        
+        document.body.appendChild(heart);
+        
+        const angle = (index / 30) * Math.PI * 2;
+        const distance = 150 + Math.random() * 100;
+        const targetX = x + Math.cos(angle) * distance;
+        const targetY = y + Math.sin(angle) * distance;
+        
+        requestAnimationFrame(() => {
+            heart.style.left = targetX + 'px';
+            heart.style.top = targetY + 'px';
+            heart.style.opacity = '0';
+            heart.style.transform = `scale(2) rotate(${Math.random() * 720}deg)`;
+        });
+        
+        setTimeout(() => heart.remove(), 1500);
+    }
+</script>
+</body>
+</html>
